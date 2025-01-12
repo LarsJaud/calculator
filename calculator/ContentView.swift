@@ -15,6 +15,11 @@ struct ContentView: View {
             Text(display)
                 .font(.largeTitle)
                 .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .cornerRadius(10)
+            
+            Spacer()
         }
         .padding()
     }
