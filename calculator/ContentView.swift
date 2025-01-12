@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var display = "0"
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        VStack(spacing: 10) {
+            Text(display)
+                .font(.largeTitle)
+                .frame(maxWidth: .infinity, alignment: .trailing)
         }
         .padding()
     }
