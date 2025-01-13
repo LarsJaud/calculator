@@ -14,7 +14,8 @@ A simple and elegant calculator app built with SwiftUI. This app supports basic 
 
 | Light Mode                           | Dark Mode                           |
 |--------------------------------------|-------------------------------------|
-| ![Light Mode Screenshot](light.png) | ![Dark Mode Screenshot](dark.png)  |
+| <img src="light.png" width="300" /> | <img src="dark.png" width="300" /> |
+
 
 ## Getting Started
 
