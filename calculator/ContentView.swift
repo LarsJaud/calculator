@@ -8,63 +8,76 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var display = "0"
+    @State private var display = "0"
     @State private var firstNumber: Double?
     @State private var operation: String?
     @State private var isEnteringSecondNumber = false
-    @State private var isDarkMode = false // Zustand für Dark Mode
+    @State private var isDarkMode = false
+    @State private var username: String = ""
+    @State private var isWelcomeScreenActive = true
     
     var body: some View {
-        VStack(spacing: 10) {
-            // Toggle für Dark Mode
-            HStack {
-                Text("Dark Mode")
+        if isWelcomeScreenActive {
+            WelcomeView(username: $username, isWelcomeScreenActive: $isWelcomeScreenActive)
+        } else {
+            VStack(spacing: 10) {
+                // Begrüßung
+                Text("Hello, \(username)!")
                     .font(.headline)
-                Spacer()
-                Toggle("", isOn: $isDarkMode)
-                    .labelsHidden()
-            }
-            .padding(50)
-            
-            // Display-Anzeige
-            Text(display)
-                .font(.largeTitle)
-                .frame(maxWidth: .infinity, alignment: .trailing)
+                    .padding(.top)
+                
+                // Toggle für Dark Mode
+                HStack {
+                    Text("Dark Mode")
+                        .font(.headline)
+                    Spacer()
+                    Toggle("", isOn: $isDarkMode)
+                        .labelsHidden()
+                }
                 .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(10)
-            
-            // Buttons
-            let buttons = [
-                ["7", "8", "9", "÷"],
-                ["4", "5", "6", "×"],
-                ["1", "2", "3", "-"],
-                ["C", "0", ".", "+"],
-                ["="]
-            ]
-            
-            // Button-Layout
-            ForEach(buttons, id: \.self) { row in
-                HStack(spacing: 10) {
-                    ForEach(row, id: \.self) { button in
-                        Button(action: {
-                            buttonTapped(button)
-                        }) {
-                            Text(button)
-                                .font(.title)
-                                .frame(width: 80, height: 80)
-                                .background(isDarkMode ? Color.gray : Color.blue)
-                                .foregroundColor(Color.white)
-                                .cornerRadius(10)
+                
+                Spacer()
+                
+                // Display-Anzeige
+                Text(display)
+                    .font(.largeTitle)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .padding()
+                    .background(Color.gray.opacity(0.2))
+                    .cornerRadius(10)
+                
+                // Buttons
+                let buttons = [
+                    ["7", "8", "9", "÷"],
+                    ["4", "5", "6", "×"],
+                    ["1", "2", "3", "-"],
+                    ["C", "0", ".", "+"],
+                    ["="]
+                ]
+                
+                // Button-Layout
+                ForEach(buttons, id: \.self) { row in
+                    HStack(spacing: 10) {
+                        ForEach(row, id: \.self) { button in
+                            Button(action: {
+                                buttonTapped(button)
+                            }) {
+                                Text(button)
+                                    .font(.title)
+                                    .frame(width: 80, height: 80)
+                                    .background(isDarkMode ? Color.gray : Color.cyan)
+                                    .foregroundColor(Color.white)
+                                    .cornerRadius(10)
+                            }
                         }
                     }
                 }
+                
+                Spacer()
             }
-            
-            Spacer()
+            .padding()
+            .preferredColorScheme(isDarkMode ? .dark : .light)
         }
-        .padding()
-        .preferredColorScheme(isDarkMode ? .dark : .light) // Dynamische Umschaltung
     }
     
     // Button-Logik
@@ -132,3 +145,4 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
