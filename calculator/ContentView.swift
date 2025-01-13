@@ -24,7 +24,7 @@ struct ContentView: View {
                 Toggle("", isOn: $isDarkMode)
                     .labelsHidden()
             }
-            .padding()
+            .padding(50)
             
             // Display-Anzeige
             Text(display)
@@ -39,7 +39,8 @@ struct ContentView: View {
                 ["7", "8", "9", "÷"],
                 ["4", "5", "6", "×"],
                 ["1", "2", "3", "-"],
-                ["C", "0", "=", "+"]
+                ["C", "0", ".", "+"],
+                ["="]
             ]
             
             // Button-Layout
@@ -68,13 +69,18 @@ struct ContentView: View {
     
     // Button-Logik
     func buttonTapped(_ button: String) {
-        if let number = Double(button) {
+        if let number = Int(button) {
             // Zahleneingabe
             if display == "0" || isEnteringSecondNumber {
                 display = "\(number)"
                 isEnteringSecondNumber = false
             } else {
                 display += "\(number)"
+            }
+        } else if button == "." {
+            // Dezimalpunkt hinzufügen
+            if !display.contains(".") {
+                display += "."
             }
         } else if button == "C" {
             // Reset
@@ -85,17 +91,20 @@ struct ContentView: View {
         } else if button == "=" {
             // Berechnung
             if let first = firstNumber, let op = operation, let second = Double(display) {
+                let result: Double
                 switch op {
                 case "+":
-                    display = "\(first + second)"
+                    result = first + second
                 case "-":
-                    display = "\(first - second)"
+                    result = first - second
                 case "×":
-                    display = "\(first * second)"
+                    result = first * second
                 case "÷":
-                    display = second != 0 ? "\(first / second)" : "Error"
-                default: break
+                    result = second != 0 ? first / second : Double.nan
+                default:
+                    return
                 }
+                display = formatResult(result)
                 firstNumber = nil
                 operation = nil
                 isEnteringSecondNumber = false
@@ -107,6 +116,15 @@ struct ContentView: View {
                 operation = button
                 isEnteringSecondNumber = true
             }
+        }
+    }
+    
+    // Formatierung der Ergebnisse
+    func formatResult(_ result: Double) -> String {
+        if result.truncatingRemainder(dividingBy: 1) == 0 {
+            return String(format: "%.0f", result) // Ganze Zahl ohne Nachkommastellen
+        } else {
+            return String(result) // Kommazahl
         }
     }
 }
